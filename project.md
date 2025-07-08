@@ -2,15 +2,19 @@
 
 O objetivo deste projeto é desenvolver uma plataforma de trading voltada para a compra e venda de ativos digitais, utilizando criptomoedas como exemplo.
 
-As negociações ocorrem por meio de contas de usuário, cada uma identificada por nome, e-mail, documento e senha. Esse processo de identificação é conhecido como KYC (Know Your Customer).
+As negociações ocorrem por meio de contas de usuário, cada uma identificada por nome, e-mail, documento e senha.
 
 Cada conta pode possuir diferentes ativos, representados por seus respectivos códigos e quantidades. Para começar a operar, o usuário precisa realizar um depósito. Saques também são permitidos, possibilitando a retirada de fundos da plataforma.
 
 As negociações são feitas dentro de um mercado, por meio de ordens de compra e venda, cada uma contendo a quantidade e o preço limite que o usuário está disposto a pagar ou receber pelo ativo.
 
-As ordens são inseridas em um livro de ofertas e são executadas quando ocorre uma correspondência entre uma ordem de compra e uma de venda. A correspondência acontece sempre entre a maior oferta de compra e a menor oferta de venda. Por exemplo: se há uma ordem de compra de 1 BTC a R$ 83.000 e uma ordem de venda a R$ 82.400, ocorre uma negociação, pois o valor de compra é superior ao de venda.
+As ordens são inseridas em um livro de ofertas e são executadas quando ocorre uma correspondência entre uma ordem de compra e uma de venda.
 
-Esse processo gera uma negociação, que registra a quantidade executada (sempre a menor entre as duas ordens), o valor acordado e o lado da ordem mais antiga.
+A correspondência acontece sempre entre a maior oferta de compra e a menor oferta de venda. Por exemplo: se já existe no livro uma ordem de compra de 10 BTC a R$ 83.000 e chega uma ordem de venda  de 5 BTC a R$ 82.400, ocorre uma negociação, pois o valor de compra é superior ao de venda.
+
+Esse processo gera uma negociação, que registra a quantidade executada (sempre a menor entre as duas ordens), o valor e a operação (compra ou venda) da ordem mais recente.
+
+No exemplo anterior, a menor quantidade entre a ordem de compra de 10 BTC e de venda de 5 BTC é 5, então a quantidade da negociação é 5. O valor utilizado na negociação é da ordem mais antiga, que nesse caso é de R$ 83.000 e a operação é de venda, ou seja, foram vendidos 5 BTC por R$ 83.000, a ordem de venda é eliminada do livro e a ordem de compra é atualizada para apenas 5 BTC.
 
 Caso não haja correspondência imediata, a ordem permanece no livro aguardando novas contrapartes.
 
@@ -36,7 +40,7 @@ A plataforma também deverá fornecer informações como a profundidade do merca
 | Preço de Venda (Sell/Ask Price)     | O menor preço que alguém está disposto a vender. |
 | Preço Máximo (Max Price)       | O maior preço registrado em um determinado período. |
 | Preço Mínimo (Min Price)       | O menor preço registrado em um determinado período. |
-| Side                           | Direção da ordem: buy (compra) ou sell (venda). Define se o usuário quer adquirir ou se desfazer de um ativo. |
+| Side/Operation                           | Direção/Operação da ordem: buy (compra) ou sell (venda). Define se o usuário quer adquirir ou se desfazer de um ativo. |
 | Spread                         | Diferença entre o preço de venda e o preço de compra existentes no livro de ofertas. Reflete a liquidez do mercado. |
 | Último Preço (Last Price)      | Preço da negociação mais recente. |
 | Venda (Sell ou Ask)            | Intenção de vender um ativo a um determinado preço. |
