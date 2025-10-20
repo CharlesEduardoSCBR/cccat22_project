@@ -8,7 +8,13 @@
     "docker:build": "docker build -t cccat22_backend docker",
     "docker:run": "docker run -it -v $(pwd)/.:/app cccat22_backend bash",
     "compose:up": "docker compose -f .devcontainer/docker-compose.yaml up -d --build",
-    "compose:down": "docker compose -f .devcontainer/docker-compose.yaml up -v --down"
+    "compose:down": "docker compose -f .devcontainer/docker-compose.yaml -v --down",
+    "compose:exec": "docker compose -f .devcontainer/docker-compose.yaml exec -it backend bash",
+    "compose:db:down": "docker compose -f .devcontainer/docker-compose.yaml down db-account db-query -v",
+    "compose:db:up": "docker compose -f .devcontainer/docker-compose.yaml up db-account db-query -d",
+    "compose:ps": "docker compose -f ../.devcontainer/docker-compose.yaml ps",
+    "compose:services": "docker compose -f ../.devcontainer/docker-compose.yaml config --services",
+    "compose:logs": "docker compose -f ../.devcontainer/docker-compose.yaml logs -f"
   },
   "dependencies": {
     "@types/express": "^5.0.3",
