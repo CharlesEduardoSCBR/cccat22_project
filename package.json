@@ -26,6 +26,6 @@
     "axios": "^1.12.2",
     "express": "^5.1.0",
     "nodemon": "^3.1.10",
-    "pg-promisse": "^11.15.0"
+    "pg-promise": "^11.15.0"
   }
 }
