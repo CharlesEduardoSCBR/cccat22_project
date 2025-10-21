@@ -34,5 +34,14 @@ app.get("/accounts/:accountId", async (req: Request, res: Response) => {
 
   res.json(account);
 });
+app.get("/accountsByEmail/:email", async (req: Request, res: Response) => {
+  const [account] = await connection.query(
+    "SELECT count(1) AS hasEmail FROM ccca.account WHERE email = $1",
+    [req.params.email]
+  );
+
+  const hasemail = parseInt(account.hasemail) > 0 ? 1 : 0;
+  res.json({ hasemail });
+});
 
 export default app;

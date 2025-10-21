@@ -1,19 +1,9 @@
 import axios from "axios";
-import { Server } from "http";
-import app from "../src/app";
-
-let server: Server;
-
-beforeAll((done) => {
-    server = app.listen(3000, () => {
-        done();
-    });
-});
 
 test("Deve criar uma conta", async () => {
     const input = {
         name: "John Doe",
-        email: "john.doe@gmail.com",
+        email: `john.doe${Math.random()}@gmail.com`,
         document: "97456321558",
         password: "senha123",
     };
@@ -27,10 +17,4 @@ test("Deve criar uma conta", async () => {
     expect(responseGetAccount.data.email).toBe(input.email);
     expect(responseGetAccount.data.document).toBe(input.document);
     expect(responseGetAccount.data.password).toBe(input.password);
-});
-
-afterAll((done) => {
-  server.close(() => {
-    done();
-  });
 });
