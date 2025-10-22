@@ -1,5 +1,4 @@
 import http from 'http';
-import app from '../src/app'
 
 export default async function globalSetup() {
   console.log("🚀 INICIANDO SERVIDOR GLOBAL DE TESTE...");

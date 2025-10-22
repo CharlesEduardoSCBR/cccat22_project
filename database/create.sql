@@ -2,7 +2,7 @@ drop schema if exists ccca;
 create schema ccca;
 
 create table ccca.account (
-    id uuid primary key,
+    account_id uuid primary key,
     name text,
     password text,
     email text,
@@ -10,8 +10,8 @@ create table ccca.account (
 );
 
 create table ccca.account_asset {
-    id uuid primary key,
-    account_id uuid references ccca.account(id),
-    asset_code text,
+    account_id uuid,
+    asset_id text,
     quantity integer
+    primary key (account_id, asset_id)
 };

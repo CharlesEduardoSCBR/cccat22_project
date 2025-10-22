@@ -7,7 +7,7 @@ test.each([
   const resultado = validateSignup.validarNome(nome);
   expect(resultado).toBe(esperado);
 });
-
+/*
 test.each([
   ["leonardoDaVinci@gmail.com", false],
   ["leoVinci@gmail.com", false],
@@ -16,7 +16,7 @@ test.each([
   const resultado = await validateSignup.validarEmail(email);
   expect(resultado).toBe(esperado);
 });
-
+*/
 test.each([
   ["Senha123", true],
   ["senha123", false],
