@@ -14,6 +14,16 @@ test.each([
   ["leoVinci@", false]
 ])("Deve testar o email da conta: %", async (email, esperado) => {
   const resultado = await validateSignup.validarEmail(email);
-  console.log(resultado + " " + email + " " + esperado);
+  expect(resultado).toBe(esperado);
+});
+
+test.each([
+  ["Senha123", true],
+  ["senha123", false],
+  ["SENHA123", false],
+  ["senha!23", false],
+  ["Senh1", false]
+])("Deve testar a senha da conta: %", (senha, esperado) => {
+  const resultado = validateSignup.validarPassword(senha);
   expect(resultado).toBe(esperado);
 });
