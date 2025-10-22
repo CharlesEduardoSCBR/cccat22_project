@@ -8,3 +8,10 @@ create table ccca.account (
     email text,
     document text
 );
+
+create table ccca.account_asset {
+    id uuid primary key,
+    account_id uuid references ccca.account(id),
+    asset_code text,
+    quantity integer
+};

@@ -3,7 +3,7 @@ import crypto from "crypto";
 import { Request, Response } from "express";
 import pgp from "pg-promise";
 
-const connection = pgp()("postgres://postgres:123@db:5432/app");
+export const connection = pgp()("postgres://postgres:123@db:5432/app");
 const app = express();
 
 app.use(express.json());
