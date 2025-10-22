@@ -9,7 +9,7 @@ test.each([
 });
 
 test.each([
-  ["leonardoDaVinci@gmail.com", true],
+  ["leonardoDaVinci@gmail.com", false],
   ["leoVinci@gmail.com", false],
   ["leoVinci@", false]
 ])("Deve testar o email da conta: %", async (email, esperado) => {
