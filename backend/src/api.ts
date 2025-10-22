@@ -12,6 +12,7 @@ const accountService = new AccountService(accountDAO);
 
 app.post("/signup", async (req: Request, res: Response) => {
   const account = req.body;
+  console.log(account);
   try {
     const output = await accountService.signup(account);
     res.json(output);
