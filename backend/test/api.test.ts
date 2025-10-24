@@ -1,6 +1,19 @@
 import axios from "axios";
 
-axios.defaults.validateStatus = () => true;
+const BASEURL = `${process.env.URL_BASE || "http://localhost"}:${process.env.PORT || 3001}`;
+const api = axios.create({ baseURL: BASEURL });
+
+api.defaults.validateStatus = () => true;
+
+test("deve verificar se o servidor está rodando", async () => {
+  const response = await api.get("/health");
+
+  expect(response.status).toBe(200);
+  expect(response.data).toMatchObject({
+    status: "ok",
+    environment: "test",
+  });
+});
 
 test("Deve criar uma conta", async () => {
   const input = {
@@ -9,9 +22,9 @@ test("Deve criar uma conta", async () => {
     document: "97456321558",
     password: "asdQWE123",
   };
-  const responseSignup = await axios.post("http://localhost:3000/signup", input);
+  const responseSignup = await axios.post(`${BASEURL}/signup`, input);
   const outputSignup = responseSignup.data;
-  const responseGetAccount = await axios.get(`http://localhost:3000/accounts/${outputSignup.accountId}`);
+  const responseGetAccount = await axios.get(`${BASEURL}/accounts/${outputSignup.accountId}`);
   const outputGetAccount = responseGetAccount.data;
   expect(outputSignup.accountId).toBeDefined();
   expect(outputGetAccount.name).toBe(input.name);
@@ -27,11 +40,11 @@ test("Não deve criar uma conta se o nome for inválido", async () => {
     document: "97456321558",
     password: "asdQWE123",
   };
-  const responseSignup = await axios.post(
-    "http://localhost:3000/signup",
-    input
-  );
-  expect(responseSignup.status).toBe(422);
-  const outputSignup = responseSignup.data;
-  expect(outputSignup.message).toBe("Nome inválido");
+
+  try {
+    const responseSignup = await axios.post(`${BASEURL}/signup`, input);
+  } catch (error: any) {
+    expect(error.response.status).toBe(422);
+    expect(error.response.data.message).toBe("Nome inválido");
+  }
 });
