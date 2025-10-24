@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import { AccountDAODatabase } from "./AccountDAO";
 import AccountService from "./AccountService";
+import Registry from "./Registry";
 
 export function createApp() {
   const app = express();
@@ -9,7 +10,8 @@ export function createApp() {
   app.use(cors());
 
   const accountDAO = new AccountDAODatabase();
-  const accountService = new AccountService(accountDAO);
+  Registry.getInstance().provide("AccountDAO", accountDAO);
+  const accountService = new AccountService();
 
   app.get("/health", (req: Request, res: Response) => {
     res.json({

@@ -1,12 +1,14 @@
 import { AccountDAODatabase, AccountDAOMemory } from "../src/AccountDAO";
 import AccountService from "../src/AccountService";
 import sinon from "sinon";
+import Registry from "../src/Registry";
+
 let accountService: AccountService;
 
 beforeEach(() => {
-  //const accountDAO = new AccountDAOMemory();
   const accountDAO = new AccountDAODatabase();
-  accountService = new AccountService(accountDAO);
+  Registry.getInstance().provide("AccountDAO", new AccountDAODatabase());
+  accountService = new AccountService();
 });
 
 test("Deve criar uma conta", async () => {
@@ -94,7 +96,8 @@ test("Deve criar uma conta com mock", async () => {
 
 test("Deve criar uma conta com fake", async () => {
   const accountDAO = new AccountDAOMemory();
-  const accountService = new AccountService(accountDAO);
+  Registry.getInstance().provide("AccountDAO", accountDAO);
+  const accountService = new AccountService();
   const account = {
     name: "John Doe",
     email: "john.doe@example.com",

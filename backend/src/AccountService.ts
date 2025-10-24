@@ -2,9 +2,14 @@ import crypto from "crypto";
 import { validateCpf } from "./validateCpf";
 import AccountValidate from "./AccountValidate";
 import AccountDAO, { AccountDAODatabase } from "./AccountDAO";
+import Registry from "./Registry";
 
 export default class AccountService {
-  constructor(readonly accountDAO: AccountDAO) {}
+  accountDAO: AccountDAO;
+
+  constructor() {
+    this.accountDAO = Registry.getInstance().inject("AccountDAO");
+  }
 
   async signup(account: any): Promise<any> {
     account.accountId = crypto.randomUUID();
