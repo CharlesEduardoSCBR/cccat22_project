@@ -9,9 +9,9 @@ create table ccca.account (
     document text
 );
 
-create table ccca.account_asset {
+create table ccca.account_asset (
     account_id uuid,
     asset_id text,
-    quantity integer
+    quantity integer,
     primary key (account_id, asset_id)
-};
+);

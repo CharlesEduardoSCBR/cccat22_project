@@ -11,6 +11,7 @@ export function createApp() {
 
   const accountDAO = new AccountDAODatabase();
   Registry.getInstance().provide("AccountDAO", accountDAO);
+  Registry.getInstance().provide("AccountAssetDAO", new AccountDAODatabase())
   const accountService = new AccountService();
 
   app.get("/health", (req: Request, res: Response) => {

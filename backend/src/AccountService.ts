@@ -3,10 +3,13 @@ import { validateCpf } from "./validateCpf";
 import AccountValidate from "./AccountValidate";
 import AccountDAO from "./AccountDAO";
 import { inject } from "./Registry";
+import AccountAssetDAO from "./AccountAssetDAO";
 
 export default class AccountService {
   @inject("AccountDAO")
-  accountDAO!: AccountDAO; 
+  accountDAO!: AccountDAO;
+  @inject("AccountAssetDAO")
+  accountAssetDAO!: AccountAssetDAO;
 
   async signup(account: any): Promise<any> {
     account.accountId = crypto.randomUUID();
@@ -21,5 +24,25 @@ export default class AccountService {
   async getAccountById(accountId: string): Promise<any> {
     return this.accountDAO.getById(accountId);
   }
-  
+
+async getAccount(accountId: string): Promise<any> {
+    const account = await this.accountDAO.getById(accountId);
+    const assets = await this.accountAssetDAO.getByAccountId(accountId);
+    account.balances = assets;
+    return account;
+  }
+
+  async deposit (accountAsset: any) {
+    const account = await this.accountDAO.getById(accountAsset.accountId);
+    if (!account) {throw new Error("Account not found");}
+    await this.accountAssetDAO.save(accountAsset);
+  }
+
+  async withdraw (accountAsset: any) {
+    const account = await this.getAccount(accountAsset.accountId);
+    const balances = account.balances.find((balance: any) => balance.asset_id === accountAsset.assetId);
+    const quantity = parseFloat(balances.quantity) - accountAsset.quantity;
+    if (quantity < 0) {throw new Error("Insuficient funds");}
+    await this.accountAssetDAO.update({ accountId: accountAsset.accountId, assetId: accountAsset.assetId, quantity });
+  }
 }
