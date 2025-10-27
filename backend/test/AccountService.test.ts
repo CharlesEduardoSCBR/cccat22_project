@@ -3,10 +3,14 @@ import AccountService from "../src/AccountService";
 import AccountAssetDAO, { AccountAssetDAODatabase } from "../src/AccountAssetDAO"; 
 import sinon from "sinon";
 import Registry from "../src/Registry";
+import DatabaseConnection, { PgPromisseAdapter } from "../src/DatabaseConnection";
 
+let connection: DatabaseConnection;
 let accountService: AccountService;
 
 beforeEach(() => {
+  connection = PgPromisseAdapter.getInstance();
+  Registry.getInstance().provide("databaseConnection", connection);
   const accountDAO = new AccountDAODatabase();
   Registry.getInstance().provide("AccountDAO", new AccountDAODatabase());
   Registry.getInstance().provide("AccountAssetDAO", new AccountAssetDAODatabase());
@@ -192,4 +196,14 @@ test("Não Deve sacar de uma conta", async () => {
     quantity: 1000,
   };
   await expect(accountService.withdraw(inputWithdraw)).rejects.toThrow("Insuficient funds");
+});
+
+afterEach(async () => {
+  const connection = PgPromisseAdapter.getInstance();
+  await connection.query("TRUNCATE ccca.account_asset RESTART IDENTITY CASCADE", []);
+  await connection.query("TRUNCATE ccca.account RESTART IDENTITY CASCADE", []);
+});
+
+afterAll(async () => {
+  await connection.close();
 });

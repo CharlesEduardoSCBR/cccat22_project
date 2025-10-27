@@ -1,8 +1,5 @@
-import { HttpStatusCode } from 'axios';
 import { createApp } from '../src/api';
 import Http from 'http';
-import { parse } from 'path';
-import pgp from "pg-promise";
 
 let server: Http.Server;
 
@@ -43,13 +40,6 @@ afterAll(async () => {
       resolve();
     });
   });
-});
-
-afterEach(async () => {
-  // Limpeza após cada teste, se necessário
-  const connection = pgp()("postgres://postgres:123@db:5432/app");
-  await connection.query("TRUNCATE ccca.account_asset RESTART IDENTITY CASCADE");
-  await connection.query("TRUNCATE ccca.account RESTART IDENTITY CASCADE");
 });
 
 jest.setTimeout(10000)

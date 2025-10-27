@@ -3,12 +3,14 @@ import cors from "cors";
 import { AccountDAODatabase } from "./AccountDAO";
 import AccountService from "./AccountService";
 import Registry from "./Registry";
+import { PgPromisseAdapter } from "./DatabaseConnection";
 
 export function createApp() {
   const app = express();
   app.use(express.json());
   app.use(cors());
 
+  Registry.getInstance().provide("databaseConnection", PgPromisseAdapter.getInstance());
   const accountDAO = new AccountDAODatabase();
   Registry.getInstance().provide("AccountDAO", accountDAO);
   Registry.getInstance().provide("AccountAssetDAO", new AccountDAODatabase())
