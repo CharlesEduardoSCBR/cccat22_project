@@ -1,45 +1,19 @@
-import express, { Request, Response } from "express";
-import cors from "cors";
 import { AccountDAODatabase } from "./AccountDAO";
 import AccountService from "./AccountService";
 import Registry from "./Registry";
 import { PgPromisseAdapter } from "./DatabaseConnection";
+import { ExpressAdapter } from "./HttpServer";
+import AccountController from "./AccountController";
 
-export function createApp() {
-  const app = express();
-  app.use(express.json());
-  app.use(cors());
-
+// entrypoint da aplicação
+export async function createApp() {
+  const PORT = parseInt(process.env.PORT || "3000");
+  const httpServer = new ExpressAdapter();
   Registry.getInstance().provide("databaseConnection", PgPromisseAdapter.getInstance());
-  const accountDAO = new AccountDAODatabase();
-  Registry.getInstance().provide("AccountDAO", accountDAO);
-  Registry.getInstance().provide("AccountAssetDAO", new AccountDAODatabase())
-  const accountService = new AccountService();
-
-  app.get("/health", (req: Request, res: Response) => {
-    res.json({
-      status: "ok",
-      environment: process.env.NODE_ENV,
-      timestamp: new Date().toISOString(),
-    });
-  });
-
-  app.post("/signup", async (req: Request, res: Response) => {
-    const account = req.body;
-    try {
-      const output = await accountService.signup(account);
-      res.json(output);
-    } catch (error: any) {
-      res.status(422).json({ message: error.message });
-    }
-  });
-
-  app.get("/accounts/:accountId", async (req: Request, res: Response) => {
-    const accountId = req.params.accountId;
-    const output = await accountService.getAccountById(accountId);
-    res.json(output);
-  });
-
-  return app;
+  Registry.getInstance().provide("AccountDAO", new AccountDAODatabase());
+  Registry.getInstance().provide("AccountAssetDAO", new AccountDAODatabase());
+  Registry.getInstance().provide("accountService", new AccountService());
+  Registry.getInstance().provide("httpServer", httpServer);
+  new AccountController();
+  return httpServer;
 }
-

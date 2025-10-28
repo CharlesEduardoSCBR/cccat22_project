@@ -10,4 +10,6 @@ module.exports = {
   },
   setupFiles: ["<rootDir>/jest.config.setup.js"],
   setupFilesAfterEnv: ["<rootDir>/test/setupTests.ts"],
+  testPathIgnorePatterns: ["/node_modules/", "/dist/", "/test/setupTests.ts"],
+  maxWorkers: 1,
 };

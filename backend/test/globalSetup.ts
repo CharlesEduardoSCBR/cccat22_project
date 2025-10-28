@@ -1,5 +1,5 @@
 import http from 'http';
-
+/*
 export default async function globalSetup() {
   console.log("🚀 INICIANDO SERVIDOR GLOBAL DE TESTE...");
 
@@ -14,3 +14,4 @@ export default async function globalSetup() {
   // @ts-ignore
   global.__SERVER__ = server;
 }
+*

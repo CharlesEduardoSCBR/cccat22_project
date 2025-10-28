@@ -1,5 +1,5 @@
 import { connection } from "../src/app";
-
+/*
 export default async function globalTeardown() {
   await new Promise<void>((resolve) => {
     console.log("🛑 FINALIZANDO SERVIDOR GLOBAL DE TESTE");
@@ -17,3 +17,4 @@ export default async function globalTeardown() {
 
   await connection.$pool.end();
 }
+*/

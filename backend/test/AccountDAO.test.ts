@@ -1,5 +1,14 @@
 import crypto from "crypto";
 import { AccountDAODatabase } from "../src/AccountDAO";
+import Registry from "../src/Registry";
+import DatabaseConnection, { PgPromisseAdapter } from "../src/DatabaseConnection";
+
+let connection: DatabaseConnection;
+
+beforeEach(() => {
+  connection = PgPromisseAdapter.getInstance();
+  Registry.getInstance().provide("databaseConnection", connection);
+});
 
 test("Deve persistir uma conta", async () => {
   const accountDAO = new AccountDAODatabase();
@@ -18,4 +27,14 @@ test("Deve persistir uma conta", async () => {
   expect(savedAccount.email).toBe(account.email);
   expect(savedAccount.document).toBe(account.document);
   expect(savedAccount.password).toBe(account.password);
+});
+
+afterEach(async () => {
+  const connection = PgPromisseAdapter.getInstance();
+  await connection.query("TRUNCATE ccca.account_asset RESTART IDENTITY CASCADE", []);
+  await connection.query("TRUNCATE ccca.account RESTART IDENTITY CASCADE", []);
+});
+
+afterAll(async () => {
+  await connection.close();
 });
