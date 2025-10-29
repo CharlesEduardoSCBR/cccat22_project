@@ -1,9 +1,9 @@
 import crypto from "crypto";
-import { validateCpf } from "./validateCpf";
-import AccountValidate from "./AccountValidate";
-import AccountDAO from "./AccountDAO";
-import { inject } from "./Registry";
-import AccountAssetDAO from "./AccountAssetDAO";
+import { validateCpf } from "../../domain/validateCpf";
+import AccountValidate from "../../domain/AccountValidate";
+import AccountDAO from "../../infra/dao/AccountDAO";
+import { inject } from "../../infra/di/Registry";
+import AccountAssetDAO from "../../infra/dao/AccountAssetDAO";
 
 export default class AccountService {
   @inject("AccountDAO")
@@ -40,7 +40,7 @@ async getAccount(accountId: string): Promise<any> {
 
   async withdraw (accountAsset: any) {
     const account = await this.getAccount(accountAsset.accountId);
-    const balances = account.balances.find((balance: any) => balance.asset_id === accountAsset.assetId);
+    const balances = account.balances.find((balance: any) => balance.assetId === accountAsset.assetId);
     const quantity = parseFloat(balances.quantity) - accountAsset.quantity;
     if (quantity < 0) {throw new Error("Insuficient funds");}
     await this.accountAssetDAO.update({ accountId: accountAsset.accountId, assetId: accountAsset.assetId, quantity });

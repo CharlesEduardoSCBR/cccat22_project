@@ -30,8 +30,6 @@ export class ExpressAdapter implements HttpServer {
     this.app[method](url, async (req: Request, res: Response) => {
       const params = req.params;
       const body = req.body;
-      console.log(url, params, body);
-
       try {
         const output = await callback(params, body);
         res.json(output);
@@ -42,9 +40,6 @@ export class ExpressAdapter implements HttpServer {
   }
 
   listen(port: number): void {
-    this.app.listen(port, this.app.HOST, () => {
-      console.log(`🚀 Servidor rodando em http://${this.app.HOST}:${port}`);
-      console.log(`📦 Ambiente: ${process.env.NODE_ENV || "development"}`);
-    });
+    this.app.listen(port, this.app.HOST);
   }
 }

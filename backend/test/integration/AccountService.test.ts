@@ -1,9 +1,9 @@
-import { AccountDAODatabase, AccountDAOMemory } from "../src/AccountDAO";
-import AccountService from "../src/AccountService";
-import AccountAssetDAO, { AccountAssetDAODatabase } from "../src/AccountAssetDAO"; 
+import { AccountDAODatabase, AccountDAOMemory } from "../../src/infra/dao/AccountDAO";
+import AccountService from "../../src/application/service/AccountService";
+import { AccountAssetDAODatabase } from "../../src/infra/dao/AccountAssetDAO"; 
 import sinon from "sinon";
-import Registry from "../src/Registry";
-import DatabaseConnection, { PgPromisseAdapter } from "../src/DatabaseConnection";
+import Registry from "../../src/infra/di/Registry";
+import DatabaseConnection, { PgPromisseAdapter } from "../../src/infra/database/DatabaseConnection";
 
 let connection: DatabaseConnection;
 let accountService: AccountService;
@@ -27,7 +27,7 @@ test("Deve criar uma conta", async () => {
 
   const outputSignup = await accountService.signup(account);
   const outputGetAccount = await accountService.getAccountById(outputSignup.accountId);
-  console.log(outputGetAccount);
+  //console.log(outputGetAccount);
   expect(outputGetAccount.account_id).toBeDefined();
   expect(outputGetAccount.name).toBe(account.name);
   expect(outputGetAccount.email).toBe(account.email);
@@ -115,7 +115,7 @@ test("Deve criar uma conta com fake", async () => {
   const outputGetAccount = await accountService.getAccountById(
     outputSignup.accountId
   );
-  console.log(outputGetAccount);
+  //console.log(outputGetAccount);
   expect(outputGetAccount.accountId).toBeDefined();
   expect(outputGetAccount.name).toBe(account.name);
   expect(outputGetAccount.email).toBe(account.email);
@@ -138,7 +138,7 @@ test("Deve depositar em uma conta", async () => {
   };
   await accountService.deposit(inputDeposit);
   const outputGetAccount = await accountService.getAccount(outputSignup.accountId);
-  expect(outputGetAccount.balances[0].asset_id).toBe("USD");
+  expect(outputGetAccount.balances[0].assetId).toBe("USD");
   expect(outputGetAccount.balances[0].quantity).toBe(1000);
 });
 
@@ -172,7 +172,7 @@ test("Deve sacar de uma conta", async () => {
   };
   await accountService.withdraw(inputWithdraw);
   const outputGetAccount = await accountService.getAccount(outputSignup.accountId);
-  expect(outputGetAccount.balances[0].asset_id).toBe("USD");
+  expect(outputGetAccount.balances[0].assetId).toBe("USD");
   expect(outputGetAccount.balances[0].quantity).toBe(500);
 });
 

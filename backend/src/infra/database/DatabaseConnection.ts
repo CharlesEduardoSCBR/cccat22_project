@@ -10,10 +10,7 @@ export class PgPromisseAdapter implements DatabaseConnection {
   private connection: any;
 
   private constructor(
-    connectionString: string = process.env.DATABASE_URL ||
-      "postgres://postgres:123@db:5432/app"
-  ) {
-    console.log(process.env.DATABASE_URL);
+    connectionString: string = process.env.DATABASE_URL ||"postgres://postgres:123@db:5432/app") {
     this.connection = pgp()(connectionString);
   }
   public static getInstance(): PgPromisseAdapter {

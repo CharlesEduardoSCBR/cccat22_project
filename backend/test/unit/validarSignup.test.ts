@@ -1,4 +1,4 @@
-import { validateSignup } from "../src/validateSignup";
+import { validateSignup } from "../../src/domain/validateSignup";
 
 test.each([
   ["Leonardo da Vinci", true],

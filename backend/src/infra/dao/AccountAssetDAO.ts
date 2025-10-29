@@ -1,10 +1,11 @@
-import DatabaseConnection from "./DatabaseConnection";
-import { inject } from "./Registry";
+import DatabaseConnection from "../database/DatabaseConnection";
+import { inject } from "../di/Registry";
 
 export default interface AccountAssetDAO {
   save(accountAsset: any): Promise<void>;
-  getByAccountId(accountId: string): Promise<any>;
   update(accountAsset: any): Promise<void>;
+  getByAccountId(accountId: string): Promise<any>;
+  deleteByAccountId(accountId: string): Promise<any>;
 }
 
 export class AccountAssetDAODatabase implements AccountAssetDAO {
@@ -22,6 +23,9 @@ export class AccountAssetDAODatabase implements AccountAssetDAO {
       "UPDATE ccca.account_asset SET quantity = $1 WHERE account_id = $2 AND asset_id = $3",
       [accountAsset.quantity, accountAsset.accountId, accountAsset.assetId]
     );
+  }
+  async deleteByAccountId(accountId: string): Promise<any> {
+    await this.connection.query("DELETE FROM ccca.account_asset WHERE account_id = $1", [accountId]);
   }
   async getByAccountId(accountId: string): Promise<any> {
     const accountAssets = await this.connection.query(

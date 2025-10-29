@@ -1,7 +1,7 @@
 import crypto from "crypto";
-import { AccountDAODatabase } from "../src/AccountDAO";
-import Registry from "../src/Registry";
-import DatabaseConnection, { PgPromisseAdapter } from "../src/DatabaseConnection";
+import { AccountDAODatabase } from "../../src/infra/dao/AccountDAO";
+import Registry from "../../src/infra/di/Registry";
+import DatabaseConnection, { PgPromisseAdapter } from "../../src/infra/database/DatabaseConnection";
 
 let connection: DatabaseConnection;
 

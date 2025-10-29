@@ -21,11 +21,10 @@ test("Deve criar uma conta", async () => {
     document: "97456321558",
     password: "asdQWE123",
   };
+
   const responseSignup = await axios.post(`${BASEURL}/signup`, input);
   const outputSignup = responseSignup.data;
-  const responseGetAccount = await axios.get(
-    `${BASEURL}/accounts/${outputSignup.accountId}`
-  );
+  const responseGetAccount = await axios.get(`${BASEURL}/accounts/${outputSignup.accountId}`);
   const outputGetAccount = responseGetAccount.data;
   expect(outputSignup.accountId).toBeDefined();
   expect(outputGetAccount.name).toBe(input.name);
@@ -45,7 +44,6 @@ test("Não deve criar uma conta se o nome for inválido", async () => {
   try {
     const responseSignup = await axios.post(`${BASEURL}/signup`, input);
   } catch (e: any) {
-    console.log(e.response.data);
     expect(e.response.status).toBe(422);
     expect(e.response.data.error).toBe("Nome inválido");
   }
