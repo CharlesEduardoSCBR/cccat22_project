@@ -9,6 +9,8 @@ module.exports = {
     ...tsJestTransformCfg,
   },
   setupFiles: ["<rootDir>/jest.config.setup.js"],
+  globalSetup: "<rootDir>/test/globalSetup.ts",
+  globalTeardown: "<rootDir>/test/globalTeardown.ts",
   setupFilesAfterEnv: ["<rootDir>/test/setupTests.ts"],
   testPathIgnorePatterns: ["/node_modules/", "/dist/", "/test/setupTests.ts"],
   maxWorkers: 1,

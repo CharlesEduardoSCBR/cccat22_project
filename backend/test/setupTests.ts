@@ -1,18 +1,13 @@
-import { createApp } from "../src/api";
+import { PgPromisseAdapter } from "../src/infra/database/DatabaseConnection";
 
-let server: any;
-
-beforeAll(async () => {
-  const PORT = parseInt(process.env.PORT || "3001");
-  const httpServer = await createApp();
-  server = httpServer.listen(PORT);
-  //console.log(`🚀 Servidor de teste rodando na porta ${PORT}`);
-});
-
+// Limpa o banco após cada arquivo de teste
 afterAll(async () => {
-  if (server) {
-    server.close(() => {
-      //console.log("🛑 Servidor de teste finalizado");
-    });
+  const connection = PgPromisseAdapter.getInstance();
+  try {
+    await connection.query("TRUNCATE ccca.account_asset RESTART IDENTITY CASCADE",[]);
+    await connection.query("TRUNCATE ccca.account RESTART IDENTITY CASCADE",[]);
+    console.log("🧹 Banco de dados limpo");
+  } catch (error) {
+    console.error("❌ Erro ao limpar banco:", error);
   }
 });

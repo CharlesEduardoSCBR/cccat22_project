@@ -2,10 +2,10 @@ import { inject } from "../../infra/di/Registry";
 import AccountRepository from "../../infra/repository/AccountRepository";
 
 export default class Deposit {
-  @inject("AccountRepository")
+  @inject("accountRepository")
   accountRepository!: AccountRepository;
 
-  async execute(input: Input) {
+  async execute(input: Input): Promise<void> {
     const account = await this.accountRepository.getById(input.accountId);
     account.deposit(input.assetId, input.quantity);
     await this.accountRepository.update(account);

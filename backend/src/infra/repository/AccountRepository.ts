@@ -10,13 +10,13 @@ export default interface AccountRepository {
 }
 
 export class AccountRepositoryDatabase implements AccountRepository {
-  @inject("AccountDAO")
+  @inject("accountDAO")
   accountDAO!: AccountDAO;
-  @inject("AccountAssetDAO")
+  @inject("accountAssetDAO")
   accountAssetDAO!: AccountAssetDAO;
 
   async save(account: Account): Promise<void> {
-    await this.accountDAO.save(account);
+    return this.accountDAO.save(account);
   }
 
   async update(account: Account): Promise<void> {
@@ -31,19 +31,9 @@ export class AccountRepositoryDatabase implements AccountRepository {
   }
 
   async getById(accountId: string): Promise<Account> {
-    console.log('🔍 AccountRepository.getById() INICIANDO para:', accountId);
-    
     try {
-      console.log("1️⃣ Verificando accountDAO:",typeof this.accountDAO,this.accountDAO);
-      console.log("2️⃣ Chamando accountDAO.getById()...");
       const accountData = await this.accountDAO.getById(accountId);
-      console.log("3️⃣ accountData recebido:", accountData);
-      if (!accountData) {
-        console.log("❌ Account not found - accountData é null/undefined");
-        throw new Error("Account not found");
-      }
-
-      console.log("4️⃣ Criando instância de Account...");
+      if (!accountData) { throw new Error("Account not found");}
       const account = new Account(
         accountData.account_id,
         accountData.name,
@@ -52,26 +42,35 @@ export class AccountRepositoryDatabase implements AccountRepository {
         accountData.password
       );
       const accountAssetsData = await this.accountAssetDAO.getByAccountId(accountId);
-      console.log("6️⃣ Assets recebidos:", accountAssetsData);
-      let balancesP: any
-      balancesP = [];
       
-      accountAssetsData.forEach((balance:any) => {
-        let balanceX = {
-          accountId: balance.account_id,
-          assetId: balance.asset_id,
-          quantity: balance.quantity,
-        };
+      for (const accountAssetData of accountAssetsData) {
+        account.balances.push({
+          assetId: accountAssetData.asset_id,
+          quantity: parseFloat(accountAssetData.quantity),
+        });
+      }
 
-        balancesP.push(balanceX);
-      });
-      account.balances = balancesP;
-      console.log(account)
-      console.log("✅ AccountRepository.getById() CONCLUÍDO", account);
       return account;
     } catch (error) {
-      console.error("💥 ERRO em AccountRepository.getById():", error);
       throw error;
     }
+  }
+}
+
+export class AccountRepositoryMemory implements AccountRepository {
+  private accounts: Map<string, Account> = new Map();
+
+  async save(account: Account): Promise<void> {
+    this.accounts.set(account.accountId, account);
+  }
+
+  async update(account: Account): Promise<void> {
+    this.accounts.set(account.accountId, account);
+  }
+
+  async getById(accountId: string): Promise<Account> {
+    const account = this.accounts.get(accountId);
+    if (!account) throw new Error("Account not found");
+    return account;
   }
 }

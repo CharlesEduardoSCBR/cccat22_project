@@ -15,10 +15,11 @@
     "compose:ps": "docker compose -f ../.devcontainer/docker-compose.yaml ps",
     "compose:services": "docker compose -f ../.devcontainer/docker-compose.yaml config --services",
     "compose:logs": "docker compose -f ../.devcontainer/docker-compose.yaml logs -f",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:verbose": "jest --verbose",
+    "test": "npm run test:cleanup && jest",
+    "test:watch": "npm run test:cleanup && jest --watch",
+    "test:cleanup": "lsof -ti:3001 | xargs kill -9 2>/dev/null || true",
+    "test:coverage": "npm run test:cleanup jest --coverage",
+    "test:verbose": "npm run test:cleanup jest --verbose",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
   },
   "dependencies": {

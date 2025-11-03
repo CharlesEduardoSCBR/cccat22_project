@@ -3,7 +3,7 @@ import { inject } from "../../infra/di/Registry";
 import Account from "../../domain/Account";
 
 export default class Signup {
-  @inject("AccountRepository")
+  @inject("accountRepository")
   accountRepository!: AccountRepository;
 
   async execute(input: Input): Promise<Output> {

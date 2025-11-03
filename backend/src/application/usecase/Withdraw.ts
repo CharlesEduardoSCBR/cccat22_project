@@ -2,7 +2,7 @@ import { inject } from "../../infra/di/Registry";
 import AccountRepository from "../../infra/repository/AccountRepository";
 
 export default class Withdraw {
-  @inject("AccountRepository")
+  @inject("accountRepository")
   accountRepository!: AccountRepository
 
   async execute (input: Input): Promise<void> {

@@ -13,12 +13,10 @@ export class AccountDAODatabase implements AccountDAO {
   connection!: DatabaseConnection;
 
   async save(account: any): Promise<void> {
-    console.log("💾 SALVANDO conta banco direto:", account);
     const result = await this.connection.query(
       "INSERT INTO ccca.account (account_id, name, email, document, password) VALUES ($1, $2, $3, $4, $5)",
           [account.accountId, account.name, account.email, account.document, account.password]
         );
-    console.log("✅ SALVO no banco. Result:", result);
   };
   async update(account: any): Promise<void> {
     await this.connection.query(
@@ -27,14 +25,11 @@ export class AccountDAODatabase implements AccountDAO {
     );
   };
   async getById(accountId: string): Promise<any> {
-      console.log("🔍 BUSCANDO accountId banco direto:", accountId);
       const result = await this.connection.query(
         "SELECT * FROM ccca.account WHERE account_id = $1",
         [accountId]
       );
-      console.log("📦 Resultado da query:", result);
       const [account] = result;
-      console.log("✅ Conta encontrada:", account);
       return account;
   };
   async getByEmail(email: string): Promise<any> {
@@ -54,18 +49,9 @@ export class AccountDAOMemory implements AccountDAO {
       throw new Error("Method not implemented.");
   }
   async getById(accountId: string): Promise<any> {
-    console.log("🔍 BUSCANDO accountId:", accountId);
-    console.log("📦 Total de contas no array:", this.accounts.length);
-    console.log("📋 Contas disponíveis:", this.accounts);
     const found = this.accounts.find((account) => {
-      console.log(
-        `   Comparando: "${account.accountId}" === "${accountId}" ?`,
-        account.accountId === accountId
-      );
       return account.accountId === accountId;
     });
-
-    console.log("✅ Conta encontrada:", found);
     return found;
   }
   async getByEmail(email: string): Promise<any> {

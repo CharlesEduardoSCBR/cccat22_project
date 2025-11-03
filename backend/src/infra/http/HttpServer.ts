@@ -18,7 +18,7 @@ export class ExpressAdapter implements HttpServer {
         dotenv.config({ path: envFile });
     }
     
-    this.PORT = parseInt(process.env.PORT || "3000");
+    this.PORT = parseInt(process.env.PORT || "3001");
     this.HOST = process.env.HOST || "0.0.0.0";
 
     this.app = express();
@@ -39,7 +39,9 @@ export class ExpressAdapter implements HttpServer {
     });
   }
 
-  listen(port: number): void {
-    this.app.listen(port, this.app.HOST);
+  listen(port: number): any {
+    const server = this.app.listen(port, this.HOST);
+    return server;
+
   }
 }

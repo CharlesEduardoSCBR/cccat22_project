@@ -1,4 +1,3 @@
-import AccountService from "../../application/service/AccountService";
 import HttpServer from "../http/HttpServer";
 import { inject } from "../di/Registry";
 import Signup from "../../application/usecase/Signup";
@@ -25,19 +24,10 @@ export default class AccountController {
       return output;
     });
     this.httpServer.route("get", "/accounts/:accountId", async (params: any, body: any) => {
-      console.log(`🎯 Controller: GET /accounts/:accountId chamado`);
-      console.log(`   params:`, params);
-      console.log(`   accountId:`, params.accountId);
-
       try {
-        console.log(`📞 Chamando getAccount.execute()...`);
         const output = await this.getAccount.execute(params.accountId);
-        console.log(`✅ getAccount.execute() retornou:`, output);
         return output;
       } catch (error: any) {
-        console.error(`💥 ERRO no controller:`, error);
-        console.error(`   Message:`, error.message);
-        console.error(`   Stack:`, error.stack);
         throw error;
       }
     });

@@ -2,7 +2,7 @@ import { inject } from "../../infra/di/Registry";
 import AccountRepository from "../../infra/repository/AccountRepository";
 
 export default class GetAccount {
-  @inject("AccountRepository")
+  @inject("accountRepository")
   accountRepository!: AccountRepository;
 
   async execute(accountId: string): Promise<Output> {
