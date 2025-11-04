@@ -1,25 +1,27 @@
-import AccountValidate from "./AccountValidate";
-import { validateCpf } from "./validateCpf";
+import Document from "./Document";
+import Email from "./Email";
+import Name from "./Name";
+import Order from "./Order";
+import Password from "./Password";
 
 export default class Account {
   balances: Balance[] = [];
-  //private name: Name;
-  //private email: Email;
-  //private document: Document;
-  //private password: Password;
+  private name: Name;
+  private email: Email;
+  private document: Document;
+  private password: Password;
 
   constructor(
     readonly accountId: string,
-    readonly name: string,
-    readonly email: string,
-    readonly document: string,
-    readonly password: string
+    name: string,
+    email: string,
+    document: string,
+    password: string
   ) {
-    if (!AccountValidate.validarNome(name)) throw new Error("Nome inválido");
-    if (!AccountValidate.validarEmail(email)) throw new Error("Email inválido");
-    if (!AccountValidate.validarPassword(password))
-      throw new Error("Senha inválida");
-    if (!validateCpf(document)) throw new Error("Documento inválido");
+    this.name = new Name(name);
+    this.email = new Email(email);
+    this.document = new Document(document);
+    this.password = new Password(password);
   }
 
   static create(
@@ -59,7 +61,7 @@ export default class Account {
     if (!balance) return 0;
     return balance;
   }
-  /*
+  
   getName() {
     return this.name.getValue();
   }
@@ -75,7 +77,6 @@ export default class Account {
   getPassword() {
     return this.password.getValue();
   }
-    */
 }
 
 type Balance = {

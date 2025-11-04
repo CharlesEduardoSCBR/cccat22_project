@@ -9,6 +9,7 @@ import { ExpressAdapter } from "./infra/http/HttpServer";
 import { AccountRepositoryDatabase } from "./infra/repository/AccountRepository";
 import { OrderRepositoryDatabase } from "./infra/repository/OrderRepository";
 import { MediatorMemory } from "./infra/mediator/Mediator";
+import ExecuteOrder from "./application/usecase/ExecuteOrder";
 
 // entrypoint da aplicação
 export async function createApp() {

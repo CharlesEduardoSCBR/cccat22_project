@@ -1,3 +1,5 @@
+import crypto from "crypto";
+
 export default class Order {
   constructor(
     readonly orderId: string,
@@ -23,18 +25,7 @@ export default class Order {
     const timestamp = new Date();
     const fillQuantity = 0;
     const fillPrice = 0;
-    return new Order(
-      orderId,
-      accountId,
-      marketId,
-      side,
-      quantity,
-      price,
-      fillQuantity,
-      fillPrice,
-      status,
-      timestamp
-    );
+    return new Order(orderId, accountId, marketId, side, quantity, price, fillQuantity, fillPrice, status, timestamp);
   }
   getAvailableQuantity() {
     return this.quantity - this.fillQuantity;

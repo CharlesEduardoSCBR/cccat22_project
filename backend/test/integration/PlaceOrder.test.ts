@@ -1,7 +1,7 @@
 import Deposit from "../../src/application/usecase/Deposit";
 import ExecuteOrder from "../../src/application/usecase/ExecuteOrder";
 import GetAccount from "../../src/application/usecase/GetAccount";
-import GetDepth from "../../src/application/usecase/GetDepth";
+import GetDepth from "../../src/application/usecase/GetDepht";
 import GetOrder from "../../src/application/usecase/GetOrder";
 import PlaceOrder from "../../src/application/usecase/PlaceOrder";
 import Signup from "../../src/application/usecase/Signup";
@@ -52,33 +52,29 @@ test("Deve criar uma ordem de compra", async () => {
     name: "John Doe",
     email: "john.doe@gmail.com",
     document: "97456321558",
-    password: "asdQWE123"
-  }
+    password: "asdQWE123",
+  };
   const outputSignup = await signup.execute(input);
   const inputDeposit = {
     accountId: outputSignup.accountId,
     assetId: "USD",
-    quantity: 100000
-  }
+    quantity: 100000,
+  };
   await deposit.execute(inputDeposit);
   const inputPlaceOrder = {
     accountId: outputSignup.accountId,
-    marketId: "BTC/USD",
+    marketId,
     side: "buy",
     quantity: 1,
-    price: 85000
-  }
+    price: 85000,
+  };
   const outputPlaceOrder = await placeOrder.execute(inputPlaceOrder);
   expect(outputPlaceOrder.orderId).toBeDefined();
-  
   const outputGetOrder = await getOrder.execute(outputPlaceOrder.orderId);
   expect(outputGetOrder.marketId).toBe(inputPlaceOrder.marketId);
-  expect(outputGetOrder.orderId).toBeDefined();
   expect(outputGetOrder.side).toBe(inputPlaceOrder.side);
   expect(outputGetOrder.quantity).toBe(inputPlaceOrder.quantity);
   expect(outputGetOrder.price).toBe(inputPlaceOrder.price);
-  expect(outputGetOrder.marketId).toBe(inputPlaceOrder.marketId);
-  
   const outputGetDepth = await getDepth.execute(marketId);
   expect(outputGetDepth.buys).toHaveLength(1);
   expect(outputGetDepth.sells).toHaveLength(0);
@@ -246,5 +242,5 @@ test("Deve criar três ordens de compra e uma ordem de venda, com valores difere
   expect(outputGetDepth.buys).toHaveLength(0);
   expect(outputGetDepth.sells).toHaveLength(0);
   const outputGetOrder3 = await getOrder.execute(outputPlaceOrder3.orderId);
-  console.log(outputGetOrd3);
+  console.log(outputGetOrder3);
 });
