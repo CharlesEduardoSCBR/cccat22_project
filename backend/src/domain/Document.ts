@@ -3,7 +3,7 @@ export default class Document {
   private value: string;
 
   constructor(value: string) {
-    if (!this.isValid(value)) throw new Error("Invalid document");
+    if (!this.isValid(value)) throw new Error("Documento inválido");
     this.value = value;
   }
 

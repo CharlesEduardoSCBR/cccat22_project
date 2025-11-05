@@ -1,7 +1,7 @@
 import pgp from "pg-promise";
 
 export default interface DatabaseConnection {
-  query(statment: string, params: any[]): Promise<any>;
+  query(statment: string, params: any): Promise<any>;
   close(): Promise<void>;
 }
 
@@ -25,7 +25,7 @@ export class PgPromisseAdapter implements DatabaseConnection {
       PgPromisseAdapter.instance = null;
     }
   }
-  async query(statment: string, params: any[]): Promise<any> {
+  async query(statment: string, params: any): Promise<any> {
     return this.connection.query(statment, params);
   }
 

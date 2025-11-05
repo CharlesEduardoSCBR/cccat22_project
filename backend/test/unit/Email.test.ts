@@ -10,6 +10,6 @@ test.each(["john.doe@gmail.com"])(
 test.each(["john@", "john@.com", "john@gmail"])(
   "Não deve validar o email: %s",
   (email: string) => {
-    expect(() => new Email(email)).toThrow(new Error("Invalid email"));
+    expect(() => new Email(email)).toThrow(new Error("Email inválido"));
   }
 );

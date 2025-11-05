@@ -2,7 +2,7 @@ export default class Name {
   private value: string;
 
   constructor(value: string) {
-    if (!this.isValid(value)) throw new Error("Invalid name");
+    if (!this.isValid(value)) throw new Error("Nome inválido");
     this.value = value;
   }
 
